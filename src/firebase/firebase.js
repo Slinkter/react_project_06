@@ -98,3 +98,20 @@ export async function insertNewLink(link) {
     console.error(error);
   }
 }
+
+export async function getLinks(uid) {
+  const links = [];
+  try {
+    const collectionRef = collection(db, "links");
+    const q = query(collectionRef, where("uid", "==", uid));
+    const querySnapsnot = await getDocs(q);
+
+    querySnapsnot.forEach((doc) => {
+      const link = { ...doc.data() };
+      link.docId = doc.id;
+      links.push(link);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
