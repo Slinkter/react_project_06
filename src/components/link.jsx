@@ -1,38 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function Link({ docId, , url, onDelete, onUpdate }) {
+export default function Link({ docId, title, url, onDelete, onUpdate }) {
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentUrl, setCurrentUrl] = useState(url);
   const [editTitle, setEditTitle] = useState(false);
   const [editUrl, setEditUrl] = useState(false);
 
+  const titleRef = useRef(null);
+  const urlRef = useRef(null);
 
-  const titleRef = useRef(null)
-  const urlRef = useRef(null)
-
-
-  useEffect(()=>{
-
-    if(titleRef.current){
-        titleRef.current.focus()
+  useEffect(() => {
+    if (titleRef.current) {
+      titleRef.current.focus();
     }
+  }, [editTitle]);
 
-
-  },[editTitle])
-
-
-  useEffect(()=>{
-
-    if(urlRef.current){
-        urlRef.current.focus()
+  useEffect(() => {
+    if (urlRef.current) {
+      urlRef.current.focus();
     }
-    
-
-  },[editUrl])
-
-
-
-
+  }, [editUrl]);
 
   function handlEditTitle() {
     setEditTitle(true);
@@ -42,37 +29,64 @@ export default function Link({ docId, , url, onDelete, onUpdate }) {
     setEditUrl(true);
   }
   function handleChangeTitle(e) {
-   setCurrentTitle(e.target.value)
+    setCurrentTitle(e.target.value);
   }
 
   function handlChangeUrl(e) {
-    setCurrentUrl(e.target.value)
-   }
+    setCurrentUrl(e.target.value);
+  }
 
-   function handleBlurTitle(e) {
-    setCurrentUrl(e.target.value)
-   }
+  function handleBlurTitle(e) {
+    setEditTitle(false);
+    onUpdate(docId, currentTitle, currentUrl);
+  }
 
-   function handleBlurUrl(e) {
-    setCurrentUrl(e.target.value)
-   }
+  function handleBlurUrl(e) {
+    setEditUrl(false);
+    onUpdate(docId, currentTitle, currentUrl);
+  }
+
+  function handleDelete() {
+    onDelete(docId);
+  }
 
   return (
     <div key={docId}>
-
-    <div>
-    <div>{editTitle ?  <input ref={titleRef} value={currentTitle} onChange={handleChangeTitle} onBlur={handleBlurTitle} />  : (<div> <button onClick={handlEditTitle} >Edit </button> {title}  </div> )}</div>
-  </div>
-  <div>
-    <div>
-    { editUrl ? <input ref={urlRef} value={currentUrl} onChange={handlChangeUrl} onBlur={handleBlurUrl} /> : <div>   <button onClick={handlEditUrl}> Edit</button> {url} </div>}
-    </div>
-  </div>
-  <div>
-    
-    <button>Detele </button>
-  </div>
-     
+      <div>
+        <div>
+          {editTitle ? (
+            <input
+              ref={titleRef}
+              value={currentTitle}
+              onChange={handleChangeTitle}
+              onBlur={handleBlurTitle}
+            />
+          ) : (
+            <div>
+              <button onClick={handlEditTitle}>Edit </button> {currentTitle}
+            </div>
+          )}
+        </div>
+      </div>
+      <div>
+        <div>
+          {editUrl ? (
+            <input
+              ref={urlRef}
+              value={currentUrl}
+              onChange={handlChangeUrl}
+              onBlur={handleBlurUrl}
+            />
+          ) : (
+            <div>
+              <button onClick={handlEditUrl}> Edit</button> {currentUrl}
+            </div>
+          )}
+        </div>
+      </div>
+      <div>
+        <button onClick={handleDelete}>Detele </button>
+      </div>
     </div>
   );
 }

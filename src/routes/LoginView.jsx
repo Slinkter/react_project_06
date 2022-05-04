@@ -11,7 +11,7 @@ import AuthProvider from "../components/authProvider";
 
 export default function LoginView() {
   const navigate = useNavigate();
-/*   const [currentUser, setCurrentUser] = useState(null); */
+  /*   const [currentUser, setCurrentUser] = useState(null); */
 
   /* 
     State
@@ -22,6 +22,7 @@ export default function LoginView() {
     4:no hay nadie logueado
     5: ya existe el username
     6: nuevo username,click para continuar
+    7: userna no existe
     
     */
   const [state, setCurrentState] = useState(0);
@@ -68,13 +69,13 @@ export default function LoginView() {
   }
 
   function handleUserLoggedIng(user) {
-      navigate("/dashboard")
+    navigate("/dashboard");
   }
   function handleUserNoRegistered(user) {
-    navigate("/choose-username")
+    navigate("/choose-username");
   }
   function handleUserNotLoggedIn() {
-      setCurrentState(4)
+    setCurrentState(4);
   }
 
   if (state === 1) {

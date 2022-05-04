@@ -4,14 +4,19 @@ import { Link } from " ../components/link";
 import { useState } from "react";
 import DashboardWrapper from "../components/dashboardWrapper";
 import { v4 as uuidv4 } from "uuid";
-import { getLinks, insertNewLink } from "../firebase/firebase";
+import {
+  deleteLink,
+  getLinks,
+  insertNewLink,
+  updateLink,
+} from "../firebase/firebase";
 import { async } from "@firebase/util";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 export default function DashboardView() {
   const navigate = useNavigate();
-  const [state, setState] = useState(0);
   const [curentUser, setCurentUser] = useState(null);
+  const [state, setState] = useState(0);
   const [title, setTittle] = useState("");
   const [url, setUrl] = useState("");
   const [links, setLinks] = useState([]);
@@ -74,9 +79,18 @@ export default function DashboardView() {
     }
   }
 
-  function handleDeteleLink() {}
+  async function handleDeteleLink(docId) {
+    await deleteLink(docId);
+    const tmp = links.filter((link) => link.docId !== docId);
+    setLinks([...tmp]);
+  }
 
-  function handleUpdateLink() {}
+  async function handleUpdateLink(docId, title, url) {
+    const link = links.find((item) => item.docId === docId);
+    link.title = title;
+    link.ulr = url;
+    await updateLink(docId, link);
+  }
 
   return (
     <DashboardWrapper>
@@ -97,6 +111,7 @@ export default function DashboardView() {
             return (
               <Link
                 key={link.docId}
+                docId={link.docId}
                 url={link.url}
                 title={link.title}
                 onDelete={handleDeteleLink}
