@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import PublickLink from "../components/publicLink";
 import {
   existsUsername,
   getProfilePhotoUrl,
@@ -50,16 +51,12 @@ export default function PublicProfileView() {
         <img src={url} alt="" />
       </div>
 
-      <h2> {profile.profileInfo.username} </h2>
-      <h3> {profile.profileInfo.displayName} </h3>
+      <h2> {profile?.profileInfo.username} </h2>
+      <h3> {profile?.profileInfo.displayName} </h3>
       <div>
-        {" "}
         {profile?.linksInfo.map((link) => (
-          <div>
-            {" "}
-            <a href={link.url}>{link.title} </a>{" "}
-          </div>
-        ))}{" "}
+          <PublickLink key={link.id} url={link.url} title={link.title} />
+        ))}
       </div>
     </div>
   );
