@@ -9,6 +9,8 @@ import { auth, userExists } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import AuthProvider from "../components/authProvider";
 
+import style from "./loginView.modele.css";
+
 export default function LoginView() {
   const navigate = useNavigate();
   /*   const [currentUser, setCurrentUser] = useState(null); */
@@ -78,7 +80,7 @@ export default function LoginView() {
     setCurrentState(4);
   }
 
-  if (state === 1) {
+ /*  if (state === 1) {
     return <div> Loading ...</div>;
   }
 
@@ -88,19 +90,24 @@ export default function LoginView() {
 
   if (state === 3) {
     return <div> estas autenticado pero no registrado ...</div>;
-  }
+  } */
 
   if (state === 4) {
     return (
+      <div className={style.loginView}>
       <div>
-        <button onClick={handleOnClick}> Login with Google </button>
+      <h1> link tree</h1>
+      </div>
+        <button className={style.provider} onClick={handleOnClick}>          
+          Login with Google
+        </button>
       </div>
     );
   }
 
   if (state === 5) {
     return (
-      <div>
+      <div className={style.loginView}>
         <button onClick={handleOnClick}> Login with Google </button>
       </div>
     );

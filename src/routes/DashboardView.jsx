@@ -1,6 +1,6 @@
 import AuthProvider from "../components/authProvider";
 import { useNavigate } from "react-router-dom";
-import { Link } from " ../components/link";
+import Link from "../components/Link";
 import { useState } from "react";
 import DashboardWrapper from "../components/dashboardWrapper";
 import { v4 as uuidv4 } from "uuid";
@@ -12,6 +12,8 @@ import {
 } from "../firebase/firebase";
 import { async } from "@firebase/util";
 import { collection, getDocs, query, where } from "firebase/firestore";
+
+import style from "./dashboardView.module.css";
 
 export default function DashboardView() {
   const navigate = useNavigate();
@@ -96,14 +98,14 @@ export default function DashboardView() {
     <DashboardWrapper>
       <div>
         <h1> Dashboard</h1>
-        <form action="" onSubmit={handleOnSubmit}>
+        <form className="entryContainer"  action="" onSubmit={handleOnSubmit}>
           <label htmlFor="title"> title</label>
-          <input type="text" name="title" onChange={handleOnChange} />
+          <input className="input"  type="text" name="title" onChange={handleOnChange} />
 
           <label htmlFor="url"> title</label>
-          <input type="text" name="url" onChange={handleOnChange} />
+          <input  className="input"  type="text" name="url" onChange={handleOnChange} />
 
-          <input type="submit" value="create new Link" />
+          <input  className="btn" type="submit" value="create new Link" />
         </form>
 
         <div>

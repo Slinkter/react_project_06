@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function Link({ docId, title, url, onDelete, onUpdate }) {
+
+  
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentUrl, setCurrentUrl] = useState(url);
   const [editTitle, setEditTitle] = useState(false);
