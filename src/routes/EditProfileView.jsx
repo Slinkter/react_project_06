@@ -3,7 +3,13 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthProvider from "../components/authProvider";
 import DashboardWrapper from "../components/dashboardWrapper";
-import { getProfilePhotoUrl, setUserProfilePhoto, updateUser } from "../firebase/firebase";
+import {
+  getProfilePhotoUrl,
+  setUserProfilePhoto,
+  updateUser,
+} from "../firebase/firebase";
+
+import style from "./editProfileview.module.css";
 
 export default function EditProfileView() {
   const navigate = useNavigate();
@@ -16,7 +22,7 @@ export default function EditProfileView() {
   async function handleUserLoggedIng(user) {
     setCurrentUser(user);
     const url = await getProfilePhotoUrl(user.profilePicture);
-    
+
     setState(2);
   }
   function handleUserNoRegistered(user) {
@@ -41,20 +47,17 @@ export default function EditProfileView() {
       fileReader.onload = async function () {
         const imageData = fileReader.result;
         const res = await setUserProfilePhoto(currentUser.uid, imageData);
-        
+
         console.log(res);
 
-        if(res){
-          const tmpUser = {...currentUser};
+        if (res) {
+          const tmpUser = { ...currentUser };
           tmpUser.profilePicture = res.metadata.fullPath;
-          await updateUser(tmpUser)
-          setCurrentUser({...tmpUser})
-          const url = await getProfilePhotoUrl(currentUser.profilePicture)
-          setProfileUrl(url)
-
+          await updateUser(tmpUser);
+          setCurrentUser({ ...tmpUser });
+          const url = await getProfilePhotoUrl(currentUser.profilePicture);
+          setProfileUrl(url);
         }
-
-
       };
     }
   }
@@ -72,19 +75,19 @@ export default function EditProfileView() {
       <DashboardWrapper>
         <div>
           <h2> Edit Profile Info</h2>
-          <div>
+          <div className={style.profilePictureContainer}>
             <div>
               <img src={profileUrl} alt="" width={100} />
             </div>
             <div>
-              <button onClick={handleOpenFilePicker}>
+              <button className="btn" onClick={handleOpenFilePicker}>
                 {" "}
                 Choose new profile picture
               </button>
               <input
+                className={style.fileInput}
                 ref={fileRef}
                 type="file"
-                style={{ display: "none" }}
                 onChange={handleChangeFile}
               />
             </div>

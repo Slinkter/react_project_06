@@ -14,6 +14,7 @@ import { async } from "@firebase/util";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 import style from "./dashboardView.module.css";
+import styleLinks from "../components/link.module.css"
 
 export default function DashboardView() {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ export default function DashboardView() {
           <input  className="btn" type="submit" value="create new Link" />
         </form>
 
-        <div>
+        <div className={styleLinks.linksContainer}>
           {links.map((link) => {
             return (
               <Link
