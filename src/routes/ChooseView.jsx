@@ -8,19 +8,8 @@ import style from "./chooseView.module.css";
 export default function ChooseView() {
   const navigate = useNavigate();
   const [state, setState] = useState(0);
-  const [curentUser, setCurentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
   const [username, setUsername] = useState("");
-
-  function handleUserLoggedIng(user) {
-    navigate("/dashboard");
-  }
-  function handleUserNoRegistered(user) {
-    setCurentUser(user);
-    setState(3);
-  }
-  function handleUserNotLoggedIn() {
-    navigate("/login");
-  }
 
   if (state === 3) {
     function handleInputUsername(e) {
@@ -33,7 +22,7 @@ export default function ChooseView() {
         if (exists) {
           setState(5);
         } else {
-          const tmp = { ...curentUser };
+          const tmp = { ...currentUser };
           tmp.username = username;
           tmp.processCompleted = true;
           await updateUser(tmp);
@@ -45,7 +34,7 @@ export default function ChooseView() {
     if (state === 3 || state === 5) {
       return (
         <div className={style.chooseUsernameContainer}>
-          <h1> Bienvenido {curentUser.displayName} </h1>
+          <h1> Bienvenido  123 {currentUser.displayName} </h1>
           <p> para terminar el proceso elige un nombre de usuario </p>
           {state === 5 ? (
             <p> el nombre de usuario ya existe , escoge otro</p>
@@ -69,6 +58,7 @@ export default function ChooseView() {
         </div>
       );
     }
+
   }
 
   if (state === 6) {
@@ -80,14 +70,24 @@ export default function ChooseView() {
     );
   }
 
+  function handleUserLoggedIng(user) {
+    navigate("/dashboard");
+  }
+  function handleUserNoRegistered(user) {
+    setCurrentUser(user);
+    setState(3);
+  }
+  function handleUserNotLoggedIn() {
+    navigate("/login");
+  }
+
   return (
     <AuthProvider
       onUserLoggedIn={handleUserLoggedIng}
       onUserNotRegistered={handleUserNoRegistered}
       onUserNotLoggedIn={handleUserNotLoggedIn}
     >
-      {" "}
-      ChooseView{" "}
+      ChooseView
     </AuthProvider>
   );
 }

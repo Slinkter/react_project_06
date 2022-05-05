@@ -1,10 +1,5 @@
-import { async } from "@firebase/util";
-import {
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithPopup,
-} from "firebase/auth";
-import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
 import {
   auth,
   getUserInfo,
@@ -26,24 +21,29 @@ export default function AuthProvider({
       if (user) {
         const isRegistered = await userExists(user.uid);
         if (isRegistered) {
+          //
           const userInfo = await getUserInfo(user.uid);
-
+          console.group("isRegistered")
+          console.log(userInfo); 
+          console.groupEnd()
+          //
           if (userInfo.processCompleted) {
             onUserLoggedIn(userInfo);
           } else {
-            onUserNotLoggedIn(userInfo);
+            onUserNotRegistered(userInfo);
           }
+          //
         } else {
+          // creacion por default al iniciar por primera vez 
           await registerNewUser({
             uid: user.uid,
-            diplayName: user.displayName,
+            displayName: user.displayName,
             profilePicture: "",
             username: "",
             processCompleted: false,
           });
-          onUserNotRegistered(user);
+          onUserNotLoggedIn(user);
         }
-        console.log(user.displayName);
       } else {
         onUserNotLoggedIn();
       }

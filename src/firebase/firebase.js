@@ -1,7 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-//
 import { getAuth } from "firebase/auth";
 import {
   getStorage,
@@ -22,9 +20,7 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { async } from "@firebase/util";
-//
-
+// llaves en forma privada , esta en el archivo .env
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
   authDomain: process.env.REACT_APP_authDomain,
@@ -36,20 +32,18 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-/* const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app); */
-
-//
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-
+// funciones 
 export async function userExists(uid) {
-  const docRef = doc(db, "users", uid);
-  const res = await getDoc(docRef);
+  const docRef = doc(db, "users", uid); // Buscar en un documento en una base de datos.Collecion se llama "users",uid:uso de liberia uuid
+  const res = await getDoc(docRef); // 
+  console.group("userExists")
   console.log(res);
-  return res.exists();
+  console.groupEnd()
+  return res.exists(); // si el documento existe o no 
 }
 
 export async function existsUsername(username) {

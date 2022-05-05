@@ -1,74 +1,60 @@
-import { async } from "@firebase/util";
-import {
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithPopup,
-} from "firebase/auth";
 import { useEffect, useState } from "react";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, userExists } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import AuthProvider from "../components/authProvider";
 
-import style from "./loginView.modele.css";
+import "./loginView.modele.css";
+/* 
+    [state, setCurrentState]
+    0: inicial
+    1: loading
+    2: login completo
+    3: login pero sin registro
+    4: no hay nadie logueado
+    5: ya existe el username
+    6: nuevo username,click para continuar
+    7: userna no existe    
+  */
 
 export default function LoginView() {
   const navigate = useNavigate();
-  /*   const [currentUser, setCurrentUser] = useState(null); */
-
-  /* 
-    State
-    0:inicial
-    1:loading
-    2:login completo
-    3:login pero sin registro
-    4:no hay nadie logueado
-    5: ya existe el username
-    6: nuevo username,click para continuar
-    7: userna no existe
-    
-    */
   const [state, setCurrentState] = useState(0);
 
-  /*   useEffect(() => {
-    setCurrentState(1);
-    // --->
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const isRegistered = await userExists(user.uid);
-        if (isRegistered) {
-          //TODO : redirigir a dashBoard
-          setCurrentState(2);
-          navigate("/dashboard");
-        } else {
-          //TODO : redirigir a choose username
-          setCurrentState(3);
-          navigate("/choose-username");
-        }
-        console.log(user.displayName);
-      } else {
-        setCurrentState(4);
-        console.log("no hay nadie autenticado....");
-      }
-    });
-   // --->
-
-
-  }, [navigate]); */
-
+  // Boton de provedor Google
   async function handleOnClick() {
+    console.group("Google Provider");
     const googleProvider = new GoogleAuthProvider();
     await signInWithGoogle(googleProvider);
 
     async function signInWithGoogle(googleProvider) {
       try {
         const res = await signInWithPopup(auth, googleProvider);
-
         console.log(res);
       } catch (error) {
         console.error(error);
       }
     }
+    console.groupEnd();
   }
+
+
+
+  if (state === 4) {
+    return (
+      <div className="loginView">
+        <div>
+          <h1> link tree</h1>
+          <h3> stado : {state}</h3>
+        </div>
+        <button className="provider" onClick={handleOnClick}>
+          Login with Google
+        </button>
+      </div>
+    );
+  }
+
+
 
   function handleUserLoggedIng(user) {
     navigate("/dashboard");
@@ -80,46 +66,13 @@ export default function LoginView() {
     setCurrentState(4);
   }
 
- /*  if (state === 1) {
-    return <div> Loading ...</div>;
-  }
-
-  if (state === 2) {
-    return <div> estas autenticado y registrado ...</div>;
-  }
-
-  if (state === 3) {
-    return <div> estas autenticado pero no registrado ...</div>;
-  } */
-
-  if (state === 4) {
-    return (
-      <div className={style.loginView}>
-      <div>
-      <h1> link tree</h1>
-      </div>
-        <button className={style.provider} onClick={handleOnClick}>          
-          Login with Google
-        </button>
-      </div>
-    );
-  }
-
-  if (state === 5) {
-    return (
-      <div className={style.loginView}>
-        <button onClick={handleOnClick}> Login with Google </button>
-      </div>
-    );
-  }
-
   return (
     <AuthProvider
       onUserLoggedIn={handleUserLoggedIng}
-      onUserNotRegistered={handleUserNoRegistered}
       onUserNotLoggedIn={handleUserNotLoggedIn}
+      onUserNotRegistered={handleUserNoRegistered}
     >
-      <div> Loading ...</div>;
+      <div className="main-container"> Loading ... </div>
     </AuthProvider>
   );
 }

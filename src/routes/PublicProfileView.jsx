@@ -56,6 +56,7 @@ export default function PublicProfileView() {
 
       <h2> {profile?.profileInfo.username} </h2>
       <h3> {profile?.profileInfo.displayName} </h3>
+      
       <div className={styleLinks.publicLinksContainer}>
         {profile?.linksInfo.map((link) => (
           <PublickLink key={link.id} url={link.url} title={link.title} />
