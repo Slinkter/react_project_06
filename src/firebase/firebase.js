@@ -36,49 +36,62 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-// funciones 
+// funciones
 export async function userExists(uid) {
-  const docRef = doc(db, "users", uid); // Buscar en un documento en una base de datos.Collecion se llama "users",uid:uso de liberia uuid
-  const res = await getDoc(docRef); // 
-  console.group("userExists")
-  console.log(res);
-  console.groupEnd()
-  return res.exists(); // si el documento existe o no 
+  // consultar un documento  si existe  en la base de datos-Collecion "users",uid:uso de liberia uuid
+  const docRef = doc(db, "users", uid);
+  const res = await getDoc(docRef); //
+  console.group("Firebase : function userExists");
+  console.log("res : ", res);
+  console.groupEnd();
+  return res.exists(); // si el documento existe o no
 }
 
 export async function existsUsername(username) {
-  const users = [];
-  const docRef = collection(db, "users");
-  const query_users = query(docRef, where("username", "==", username));
-  const query_snapShot = await getDoc(query_users);
+  try {
+    const users = [];
+    // se va a buscar a una collecion no un documento
+    const docRef = collection(db, "users");
+    const query_users = query(docRef, where("username", "==", username));
+    const query_snapShot = await getDoc(query_users);
+    query_snapShot.forEach((doc) => {
+      users.push(doc.data());
+    });
+    console.log(users);
 
-  query_snapShot.forEach((doc) => {
-    users.push(doc.data());
-  });
-
-  return users.length > 0 ? users[0].uid : null;
+    return users.length > 0 ? users[0].uid : null;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function registerNewUser(user) {
+  // crear la plantilla de user , cuando se logea por primera vez
   try {
+    // crear la collection users
     const collectionRef = collection(db, "users");
+    // crear documento con uid
     const docRef = doc(collectionRef, user.uid);
+    // insertar el nuevo usuario en la collection
     await setDoc(docRef, user);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function updateUser(user) {
   console.log(user);
   try {
-    const userRef = collection(db, "users");
-    await setDoc(doc(userRef, user.uid), user);
+    const collectionRef = collection(db, "users");
+    const docRef = doc(collectionRef, user.uid);
+    await setDoc(docRef, user);
   } catch (error) {
     console.error(error);
   }
 }
 
 export async function getUserInfo(uid) {
-  const docRef = doc(db, "users", uid);
+  const docRef = doc(db, "users", uid); // queremos un documento, por medio del uid
   const docSnap = await getDoc(docRef);
   return docSnap.data();
 }
@@ -105,6 +118,7 @@ export async function getLinks(uid) {
       link.docId = doc.id;
       links.push(link);
     });
+    return links;
   } catch (error) {
     console.error(error);
   }
@@ -122,7 +136,7 @@ export async function updateLink(docId, link) {
 
 export async function deleteLink(docId) {
   try {
-    const docRef = doc(db, "links");
+    const docRef = doc(db, "links", docId);
     const res = await deleteDoc(docRef);
     return res;
   } catch (error) {
@@ -132,7 +146,7 @@ export async function deleteLink(docId) {
 
 export async function setUserProfilePhoto(uid, file) {
   try {
-    const imageRef = ref(storage, `images/${uid} `);
+    const imageRef = ref(storage, `images/${uid}`);
     const resUpload = await uploadBytes(imageRef, file);
     return resUpload;
   } catch (error) {
@@ -147,6 +161,7 @@ export async function getProfilePhotoUrl(profilePicture) {
     const imageRef = ref(storage, profilePicture);
     const url = await getDownloadURL(imageRef);
     return url;
+    console.log(url);
   } catch (error) {
     console.error(error);
   }

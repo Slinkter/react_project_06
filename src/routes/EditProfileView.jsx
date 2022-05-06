@@ -19,18 +19,7 @@ export default function EditProfileView() {
 
   const fileRef = useRef(null);
 
-  async function handleUserLoggedIng(user) {
-    setCurrentUser(user);
-    const url = await getProfilePhotoUrl(user.profilePicture);
 
-    setState(2);
-  }
-  function handleUserNoRegistered(user) {
-    navigate("/login");
-  }
-  function handleUserNotLoggedIn() {
-    navigate("/login");
-  }
 
   function handleOpenFilePicker() {
     if (fileRef.current) {
@@ -39,7 +28,7 @@ export default function EditProfileView() {
   }
 
   function handleChangeFile(e) {
-    const files = e.targer.files;
+    const files = e.target.files; // error 1 
     const fileReader = new FileReader();
 
     if (fileReader && files && files.length > 0) {
@@ -47,9 +36,7 @@ export default function EditProfileView() {
       fileReader.onload = async function () {
         const imageData = fileReader.result;
         const res = await setUserProfilePhoto(currentUser.uid, imageData);
-
         console.log(res);
-
         if (res) {
           const tmpUser = { ...currentUser };
           tmpUser.profilePicture = res.metadata.fullPath;
@@ -62,13 +49,33 @@ export default function EditProfileView() {
     }
   }
 
+
+
+  async function handleUserLoggedIng(user) {
+    setCurrentUser(user);
+    setState(2);
+    const url = await getProfilePhotoUrl(user.profilePicture);
+
+   
+  }
+  function handleUserNoRegistered(user) {
+    navigate("/login");
+  }
+  function handleUserNotLoggedIn() {
+    navigate("/login");
+  }
+
+
+
   if (state !== 2) {
     return (
       <AuthProvider
         onUserLoggedIn={handleUserLoggedIng}
         onUserNotRegistered={handleUserNoRegistered}
         onUserNotLoggedIn={handleUserNotLoggedIn}
-      ></AuthProvider>
+      >
+      Loading ...
+      </AuthProvider>
     );
   } else {
     return (
@@ -80,8 +87,7 @@ export default function EditProfileView() {
               <img src={profileUrl} alt="" width={100} />
             </div>
             <div>
-              <button className="btn" onClick={handleOpenFilePicker}>
-                {" "}
+              <button className="btn" onClick={handleOpenFilePicker}>     
                 Choose new profile picture
               </button>
               <input

@@ -2,33 +2,38 @@ import { useEffect, useRef, useState } from "react";
 import style from "./link.module.css";
 
 export default function Link({ docId, title, url, onDelete, onUpdate }) {
+  // variables
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentUrl, setCurrentUrl] = useState(url);
+  // actulizar
   const [editTitle, setEditTitle] = useState(false);
   const [editUrl, setEditUrl] = useState(false);
-
+  // se usa cuando se modificar los inputs y actualiza 
   const titleRef = useRef(null);
   const urlRef = useRef(null);
 
   useEffect(() => {
+    // se ejecuta cuando se modificar el input 
     if (titleRef.current) {
       titleRef.current.focus();
     }
   }, [editTitle]);
 
   useEffect(() => {
+     // se ejecuta cuando se modificar el input 
     if (urlRef.current) {
       urlRef.current.focus();
     }
   }, [editUrl]);
-
+  //
   function handlEditTitle() {
-    setEditTitle(true);
+    setEditTitle(true); // cambia la interfaz
   }
 
   function handlEditUrl() {
-    setEditUrl(true);
+    setEditUrl(true); // cambia la interfaz
   }
+  //
   function handleChangeTitle(e) {
     setCurrentTitle(e.target.value);
   }
@@ -36,12 +41,12 @@ export default function Link({ docId, title, url, onDelete, onUpdate }) {
   function handlChangeUrl(e) {
     setCurrentUrl(e.target.value);
   }
-
+  // se ejecuando cuando pierda el focus del input
   function handleBlurTitle(e) {
     setEditTitle(false);
     onUpdate(docId, currentTitle, currentUrl);
   }
-
+// se ejecuando cuando pierda el focus del input
   function handleBlurUrl(e) {
     setEditUrl(false);
     onUpdate(docId, currentTitle, currentUrl);
@@ -73,24 +78,24 @@ export default function Link({ docId, title, url, onDelete, onUpdate }) {
         </div>
       </div>
       <div className={style.linkUlr}>
-      {editUrl ? (
-        <input
-          ref={urlRef}
-          value={currentUrl}
-          onChange={handlChangeUrl}
-          onBlur={handleBlurUrl}
-        />
-      ) : (
-        <div>
-          <button onClick={handlEditUrl}>
-            <span className="material-icons"> edit </span>
-          </button>
-          {currentUrl}
-        </div>
-      )}
+        {editUrl ? (
+          <input
+            ref={urlRef}
+            value={currentUrl}
+            onChange={handlChangeUrl}
+            onBlur={handleBlurUrl}
+          />
+        ) : (
+          <div>
+            <button onClick={handlEditUrl}>
+              <span className="material-icons"> edit </span>
+            </button>
+            {currentUrl}
+          </div>
+        )}
       </div>
       <div className={style.linkActions}>
-        <button className={style.btnDelete} onClick={handleDelete}>     
+        <button className={style.btnDelete} onClick={handleDelete}>
           <span className="material-icons"> delete </span>
         </button>
       </div>

@@ -18,7 +18,9 @@ export default function ChooseView() {
 
     async function handleContinue() {
       if (username !== "") {
-        const exists = await existsUsername(username);
+        console.log(username);
+        const exists = await existsUsername(username); // return booleano
+        console.log(exists);
         if (exists) {
           setState(5);
         } else {
@@ -29,6 +31,7 @@ export default function ChooseView() {
           setState(6);
         }
       }
+    
     }
 
     if (state === 3 || state === 5) {
@@ -64,7 +67,7 @@ export default function ChooseView() {
   if (state === 6) {
     return (
       <div className={style.chooseUsernameContainer}>
-        <h1> Felicidades! ya puyede ir al dashboard a crea tus links </h1>
+        <h1> Felicidades! ya puedes ir al dashboard a crear tus links </h1>
         <Link to="/dashboard"> Continuar </Link>
       </div>
     );

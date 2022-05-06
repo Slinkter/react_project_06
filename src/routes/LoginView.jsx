@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth, userExists } from "../firebase/firebase";
+import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import AuthProvider from "../components/authProvider";
-
+//
 import "./loginView.modele.css";
 /* 
     [state, setCurrentState]
@@ -38,8 +38,6 @@ export default function LoginView() {
     console.groupEnd();
   }
 
-
-
   if (state === 4) {
     return (
       <div className="loginView">
@@ -55,15 +53,18 @@ export default function LoginView() {
   }
 
 
+  if(state === 5){
+
+  }
 
   function handleUserLoggedIng(user) {
     navigate("/dashboard");
   }
-  function handleUserNoRegistered(user) {
-    navigate("/choose-username");
-  }
   function handleUserNotLoggedIn() {
     setCurrentState(4);
+  }
+  function handleUserNoRegistered(user) {
+    navigate("/choose-username");
   }
 
   return (
@@ -72,7 +73,7 @@ export default function LoginView() {
       onUserNotLoggedIn={handleUserNotLoggedIn}
       onUserNotRegistered={handleUserNoRegistered}
     >
-      <div className="main-container"> Loading ... </div>
+      <div className="loginView"> Loading ... </div>
     </AuthProvider>
   );
 }
