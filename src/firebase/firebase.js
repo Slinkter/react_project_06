@@ -52,8 +52,9 @@ export async function existsUsername(username) {
     const users = [];
     // se va a buscar a una collecion no un documento
     const docRef = collection(db, "users");
-    const query_users = query(docRef, where("username", "==", username));
-    const query_snapShot = await getDoc(query_users);
+    const q = query(docRef, where("username", "==", username));
+    const query_snapShot = await getDocs(q); // error 2
+
     query_snapShot.forEach((doc) => {
       users.push(doc.data());
     });
@@ -160,8 +161,8 @@ export async function getProfilePhotoUrl(profilePicture) {
   try {
     const imageRef = ref(storage, profilePicture);
     const url = await getDownloadURL(imageRef);
+ /*    console.log(url); */
     return url;
-    console.log(url);
   } catch (error) {
     console.error(error);
   }

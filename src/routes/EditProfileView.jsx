@@ -36,14 +36,17 @@ export default function EditProfileView() {
       fileReader.onload = async function () {
         const imageData = fileReader.result;
         const res = await setUserProfilePhoto(currentUser.uid, imageData);
+        // hasta aqui ya se subio la imagen a firebase-storage
         console.log(res);
         if (res) {
           const tmpUser = { ...currentUser };
           tmpUser.profilePicture = res.metadata.fullPath;
+          console.log(tmpUser);
           await updateUser(tmpUser);
           setCurrentUser({ ...tmpUser });
           const url = await getProfilePhotoUrl(currentUser.profilePicture);
           setProfileUrl(url);
+          console.log(url);
         }
       };
     }
@@ -54,7 +57,9 @@ export default function EditProfileView() {
   async function handleUserLoggedIng(user) {
     setCurrentUser(user);
     setState(2);
+    // update img 
     const url = await getProfilePhotoUrl(user.profilePicture);
+    setProfileUrl(url)
 
    
   }
