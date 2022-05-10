@@ -58,7 +58,8 @@ export default function Link({ docId, title, url, onDelete, onUpdate }) {
 
   return (
     <div className={style.link} key={docId}>
-      <div className={style.linkInfo}>
+
+    <div className={style.linkInfo}>
         <div className={style.linkTitle}>
           {editTitle ? (
             <input
@@ -77,7 +78,7 @@ export default function Link({ docId, title, url, onDelete, onUpdate }) {
           )}
         </div>
       </div>
-      <div className={style.linkUlr}>
+      <div className={style.linkUrl}>
         {editUrl ? (
           <input
             ref={urlRef}
@@ -94,6 +95,7 @@ export default function Link({ docId, title, url, onDelete, onUpdate }) {
           </div>
         )}
       </div>
+     
       <div className={style.linkActions}>
         <button className={style.btnDelete} onClick={handleDelete}>
           <span className="material-icons"> delete </span>

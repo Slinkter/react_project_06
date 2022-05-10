@@ -4,7 +4,7 @@ import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import AuthProvider from "../components/authProvider";
 //
-import "./loginView.modele.css";
+import style from "./loginView.modele.css";
 /* 
     [state, setCurrentState]
     0: inicial
@@ -52,9 +52,7 @@ export default function LoginView() {
     );
   }
 
-
-  if(state === 5){
-
+  if (state === 5) {
   }
 
   function handleUserLoggedIng(user) {

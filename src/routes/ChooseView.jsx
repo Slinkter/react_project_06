@@ -31,13 +31,12 @@ export default function ChooseView() {
           setState(6);
         }
       }
-    
     }
 
     if (state === 3 || state === 5) {
       return (
         <div className={style.chooseUsernameContainer}>
-          <h1> Bienvenido  123 {currentUser.displayName} </h1>
+          <h1> Bienvenido  {currentUser.displayName} </h1>
           <p> para terminar el proceso elige un nombre de usuario </p>
           {state === 5 ? (
             <p> el nombre de usuario ya existe , escoge otro</p>
@@ -53,15 +52,13 @@ export default function ChooseView() {
           </div>
 
           <div>
-            <button className="btn" onClick={handleContinue}>
-              {" "}
-              Continue{" "}
+            <button className="btn" onClick={handleContinue}>          
+              Continue
             </button>
           </div>
         </div>
       );
     }
-
   }
 
   if (state === 6) {
@@ -90,7 +87,7 @@ export default function ChooseView() {
       onUserNotRegistered={handleUserNoRegistered}
       onUserNotLoggedIn={handleUserNotLoggedIn}
     >
-      ChooseView
+      <div className={style.chooseUsernameContainer}>Loading...</div>
     </AuthProvider>
   );
 }

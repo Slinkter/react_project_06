@@ -10,20 +10,22 @@ import {
   insertNewLink,
   updateLink,
 } from "../firebase/firebase";
-import { async } from "@firebase/util";
+
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 import style from "./dashboardView.module.css";
-import styleLinks from "../components/link.module.css"
+import styleLinks from "../components/link.module.css";
 
 export default function DashboardView() {
+  //
   const navigate = useNavigate();
+  //
   const [curentUser, setCurentUser] = useState(null);
   const [state, setState] = useState(0);
   const [title, setTittle] = useState("");
   const [url, setUrl] = useState("");
   const [links, setLinks] = useState([]);
-
+  //
   async function handleUserLoggedIng(user) {
     setCurentUser(user);
     setState(2);
@@ -44,7 +46,7 @@ export default function DashboardView() {
         onUserNotRegistered={handleUserNoRegistered}
         onUserNotLoggedIn={handleUserNotLoggedIn}
       >
-        Loading
+        Loading....
       </AuthProvider>
     );
   }
@@ -99,14 +101,25 @@ export default function DashboardView() {
     <DashboardWrapper>
       <div>
         <h1> Dashboard</h1>
-        <form className="entryContainer"  action="" onSubmit={handleOnSubmit}>
+        <form className={style.entryContainer} action="" onSubmit={handleOnSubmit}>
           <label htmlFor="title"> title</label>
-          <input className="input"  type="text" name="title" onChange={handleOnChange} />
+          <input
+            className=""
+            type="text"
+            name="title"
+            onChange={handleOnChange}
+          />
 
-          <label htmlFor="url"> title</label>
-          <input  className="input"  type="text" name="url" onChange={handleOnChange} />
+          <label htmlFor="url"> URL</label>
+          <input
+            className="input"
+            type="text"
+            name="url"
+            onChange={handleOnChange}
+          />
 
-          <input  className="btn" type="submit" value="create new Link" />
+          <input className="btn" type="submit" value="create new Link" />
+
         </form>
 
         <div className={styleLinks.linksContainer}>

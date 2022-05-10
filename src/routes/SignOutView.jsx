@@ -18,7 +18,6 @@ export default function SignOutView() {
     navigate("/login");
   }
 
-  function handleOpenFilePicker() {}
 
   return (
     <AuthProvider

@@ -41,9 +41,6 @@ export async function userExists(uid) {
   // consultar un documento  si existe  en la base de datos-Collecion "users",uid:uso de liberia uuid
   const docRef = doc(db, "users", uid);
   const res = await getDoc(docRef); //
-  console.group("Firebase : function userExists");
-  console.log("res : ", res);
-  console.groupEnd();
   return res.exists(); // si el documento existe o no
 }
 
@@ -51,15 +48,12 @@ export async function existsUsername(username) {
   try {
     const users = [];
     // se va a buscar a una collecion no un documento
-    const docRef = collection(db, "users");
-    const q = query(docRef, where("username", "==", username));
+    const collRef = collection(db, "users");
+    const q = query(collRef, where("username", "==", username));
     const query_snapShot = await getDocs(q); // error 2
-
     query_snapShot.forEach((doc) => {
       users.push(doc.data());
     });
-    console.log(users);
-
     return users.length > 0 ? users[0].uid : null;
   } catch (error) {
     console.log(error);
@@ -161,7 +155,7 @@ export async function getProfilePhotoUrl(profilePicture) {
   try {
     const imageRef = ref(storage, profilePicture);
     const url = await getDownloadURL(imageRef);
- /*    console.log(url); */
+    /*    console.log(url); */
     return url;
   } catch (error) {
     console.error(error);
